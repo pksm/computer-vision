@@ -11,7 +11,6 @@ green_lower = np.array([50, 100, 100], dtype=np.uint8)
 green_upper = np.array([70, 255, 255], dtype=np.uint8)
 
 _, frame = camera.read()
-result = frame
 
 while True:
 
@@ -24,7 +23,6 @@ while True:
                 cv2.CHAIN_APPROX_SIMPLE)
 
         for c in cnts:
-                # approximate the contour
                 peri = cv2.arcLength(c, True)
                 approx = cv2.approxPolyDP(c, 0.01 * peri, True)
 
@@ -52,14 +50,12 @@ while True:
                                 mask2 = cv2.inRange(hsv, green_lower, green_upper)
                                 frame2 = cv2.bitwise_and(light,light,mask = mask2)
                                 frame3 = frame2.astype('bool')
-                                result = result
                                 mask = cv2.inRange(hsv,lower_red, upper_red)
-                                mask2 = mask.astype('bool')
+                                maskOut = cv2.bitwise_and(light,light,mask = mask)
+                                mask2 = maskOut.astype('bool')
                                 if True in mask2:
                                         CR+=1
-                                        result = cv2.bitwise_and(light,light,mask = mask)
                                         print CR,'semaforo vermelho'
-                                        
 
                                 elif True in frame3:
                                         CV+=1
